@@ -16,8 +16,24 @@ npm i -s @synonymdev/result
 import bt from '@synonymdev/result';
 ```
 
-```javascript
-// TODO
+```typescript
+const func = (): Result<number> => {
+  return ok(42);
+  // OR
+  return err('error message');
+  // OR
+  return err(new Error('error message'));
+}
+
+const result = func();
+
+if (result.isOk()) {
+    console.log(result.value); //42
+}
+
+if (result.isErr()) {
+    console.error(result.error.message); // "error message"
+}
 ```
 
 
