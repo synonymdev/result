@@ -1,0 +1,40 @@
+{
+  "name": "@synonymdev/result",
+  "version": "0.0.1",
+  "description": "Result helper class",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "README.md",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "format": "prettier --write \"src/**/*.ts\" ",
+    "lint": "tslint -p tsconfig.json",
+    "prepublish": "yarn run build && npm --no-git-tag-version version patch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/synonymdev/result.git"
+  },
+  "author": "Jason van den Berg",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/synonymdev/result/issues"
+  },
+  "homepage": "https://github.com/synonymdev/result#readme",
+  "devDependencies": {
+    "@babel/preset-env": "^7.18.10",
+    "@babel/preset-typescript": "^7.18.6",
+    "@types/jest": "^28.1.6",
+    "babel-jest": "^28.1.3",
+    "jest": "^28.1.3",
+    "prettier": "^2.7.1",
+    "tslint": "^6.1.3",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {}
+}

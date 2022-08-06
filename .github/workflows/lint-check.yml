@@ -1,0 +1,34 @@
+name: lint-check
+
+on:
+    pull_request:
+      branches:
+        - 'master'
+
+jobs:
+  eslint:
+    name: Run lint check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 17
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        id: npmcache
+        with:
+          path: lib/node_modules
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies
+        if: steps.npmcache.outputs.cache-hit != 'true'
+        run: yarn install
+
+      - name: Lint check
+        run: yarn lint
