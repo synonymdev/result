@@ -13,7 +13,7 @@ npm i -s @synonymdev/result
 
 ## Usage
 ```javascript
-import bt from '@synonymdev/result';
+import { ok, err } from '@synonymdev/result';
 ```
 
 ```typescript
