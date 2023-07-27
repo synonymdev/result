@@ -1,49 +1,35 @@
 declare var __DEV__: boolean;
 
-export type Result<T> = Ok<T> | Err<T>;
-
-class Ok<T> {
-  public constructor(public readonly value: T) {}
-
-  public isOk(): this is Ok<T> {
-    return true;
-  }
-
-  public isErr(): this is Err<T> {
-    return false;
-  }
-}
-
-class Err<T> {
-  public constructor(public readonly error: Error) {
-    // Don't console log for unit tests or if we're not in dev mode
-    if (process.env.JEST_WORKER_ID === undefined && __DEV__) {
-      // tslint:disable-next-line:no-console
-      console.log(error);
-    }
-  }
-
-  public isOk(): this is Ok<T> {
-    return false;
-  }
-
-  public isErr(): this is Err<T> {
-    return true;
-  }
-}
-
 /**
  * Construct a new Ok result value.
  */
-export const ok = <T>(value: T): Ok<T> => new Ok(value);
+export const ok = <T>(value: T): Result<T> => new Result(value);
 
 /**
  * Construct a new Err result value.
  */
-export const err = <T>(error: Error | string): Err<T> => {
+export const err = <T>(error: Error | string): Result<T> => {
   if (typeof error === 'string') {
-    return new Err(new Error(error));
+    error = new Error(error)
   }
 
-  return new Err(error);
+  // @ts-ignore
+  return new Result(undefined, error);
 };
+
+export class Result<T, E = Error> {
+  constructor(public readonly value: T, public readonly error?: E) { }
+
+  isOk(): boolean {
+    return this.error === undefined;
+  }
+
+  isErr(): boolean {
+    return !this.isOk();
+  }
+
+  static ok = ok;
+  static err = err;
+}
+
+export default Result
