@@ -1,49 +1,42 @@
 declare var __DEV__: boolean;
 
-export type Result<T> = Ok<T> | Err<T>;
+export class Result<T, E> {
+  constructor(public readonly value: T, public readonly error: E) { }
 
-class Ok<T> {
-  public constructor(public readonly value: T) {}
-
-  public isOk(): this is Ok<T> {
-    return true;
+  isOk(): boolean {
+    return this.error === undefined;
   }
 
-  public isErr(): this is Err<T> {
-    return false;
+  isErr(): boolean {
+    return !this.isOk();
   }
 }
 
-class Err<T> {
-  public constructor(public readonly error: Error) {
-    // Don't console log for unit tests or if we're not in dev mode
-    if (process.env.JEST_WORKER_ID === undefined && __DEV__) {
-      // tslint:disable-next-line:no-console
-      console.log(error);
-    }
+export class Ok<T> extends Result<T, undefined>{
+  constructor(value: T) {
+    super(value, undefined)
   }
+}
 
-  public isOk(): this is Ok<T> {
-    return false;
-  }
-
-  public isErr(): this is Err<T> {
-    return true;
+export class Err<E> extends Result<undefined, E>{
+  constructor(error: E) {
+    super(undefined, error)
   }
 }
 
 /**
  * Construct a new Ok result value.
  */
-export const ok = <T>(value: T): Ok<T> => new Ok(value);
+export const ok = <T>(value: T): Result<T, undefined> => new Ok(value);
 
 /**
  * Construct a new Err result value.
  */
-export const err = <T>(error: Error | string): Err<T> => {
+export const err = <E>(error: Error | string): Err<E> => {
   if (typeof error === 'string') {
-    return new Err(new Error(error));
+    error = new Error(error)
   }
 
+  // @ts-ignore
   return new Err(error);
 };

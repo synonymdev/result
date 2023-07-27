@@ -1,8 +1,8 @@
-import {Result, ok, err} from '../src/index';
+import { ok, err, Ok, Err } from '../src/index';
 
 describe('result check', () => {
   it('returns result', async () => {
-    const func = (): Result<string> => {
+    const func = (): Ok<string> => {
       return ok('result');
     }
 
@@ -18,7 +18,7 @@ describe('result check', () => {
   });
 
   it('returns error', async () => {
-    const func = (): Result<string> => {
+    const func = (): Err<string> => {
       return err('failed message');
     }
 
@@ -35,3 +35,4 @@ describe('result check', () => {
     expect(result.error.message).toBe('failed message');
   });
 });
+
